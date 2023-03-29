@@ -1,12 +1,30 @@
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { Filter } from 'components/Filter/Filter';
-import { ContactList } from 'components/ContactList/ContactList';
+import { ContactForm } from '../ContactForm/ContactForm';
+import { Filter } from '../Filter/Filter';
+import { ContactList } from '../ContactList/ContactList';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { selectError, selectIsLoading } from 'redux/selectors/selectors';
+import { ThreeDots } from 'react-loader-spinner';
+import { fetchContacts } from "redux/operations";
 import { getAllContacts } from 'redux/selectors/selectors';
-import { useSelector } from 'react-redux';
+
+
+
 import { ContactsTitle, Container, Title } from './App.styled';
 import { GlobalStyle } from 'components/GlobalStyle';
+
+
+
 export const App = () => {
-const contacts = useSelector(getAllContacts);
+  const contacts = useSelector(getAllContacts);
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
 
   return (
     <Container>
@@ -15,11 +33,9 @@ const contacts = useSelector(getAllContacts);
         <ContactForm />
         <ContactsTitle>Contacts</ContactsTitle>
         <Filter />
-        {contacts.length === 0 ?
-          (<p>There are no contacts in the Phonebook</p>
-          ) : (
-            <ContactList />
-            )}
+        {isLoading&&!error?<div><ThreeDots /></div>:<ContactList />}
+        {!contacts.length && <p>There are no contacts in the Phonebook</p>}
+    
       </Container>
 
   );

@@ -1,46 +1,48 @@
-import { useState } from "react";
-import shortid from "shortid";
-import { Button, Input, Label } from './ContactForm.styled';
-import { addContact } from 'redux/contactSlice';
+import { useState } from 'react';
+import shortid from 'shortid';
+import { addContact } from '../../redux/operations';
 import { getContactsValue } from 'redux/selectors/selectors';
 import { useSelector, useDispatch } from 'react-redux';
+import { Button, Input, Label } from './ContactForm.styled';
 
 export const ContactForm = () => {
-    const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
-    const contacts = useSelector(getContactsValue);
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const contacts = useSelector(getContactsValue);
 
-    const dispatch = useDispatch();
-    const id = shortid.generate();
+  const dispatch = useDispatch();
+  const id = shortid.generate();
 
-    const createContact = ({ name, number }) => ({
-        id: id,
-        name,
-        number,
-    });
+  const createContact = ({ name, number }) => ({
+    id: id,
+    name,
+    number,
+  });
 
-    const addContactToState = contact => dispatch(addContact(contact)); 
+  const addContactToState = contact => dispatch(addContact(contact));
 
-    const handleInputChange = e => {
-        const { name, value } = e.currentTarget;
+  const handleInputChange = e => {
+    const { name, value } = e.currentTarget;
 
-        switch (name) { 
-            case 'name':
-                setName(value);
-                break;
-            
-            case 'number':
-                setNumber(value);
-                break;
-            
-            default:
-                return;
-        }
-    };
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        const userName = contacts.find(user => user.name.toLocaleLowerCase() === name.toLowerCase());
+      case 'number':
+        setNumber(value);
+        break;
+
+      default:
+        return;
+    }
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const userName = contacts.find(
+      user => user.name.toLocaleLowerCase() === name.toLowerCase()
+    );
     if (userName) {
       alert(`${name} is already in contacs`);
     } else {
@@ -49,25 +51,24 @@ export const ContactForm = () => {
     }
   };
 
-    const reset = () => {
-        setName('');
-        setNumber('')
-    };
+  const reset = () => {
+    setName('');
+    setNumber('');
+  };
 
-        return (
+  return (
     <form onSubmit={handleSubmit}>
-      <Label>
-        Name
-        <Input
-          type="text"
-          name="name"
-          value={name}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-          onChange={handleInputChange}
-        />
-      </Label>
+      <Label>Name</Label>
+
+      <Input
+        type="text"
+        name="name"
+        value={name}
+        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+        required
+        onChange={handleInputChange}
+      />
 
       <Label>
         Number
@@ -81,7 +82,7 @@ export const ContactForm = () => {
           onChange={handleInputChange}
         />
       </Label>
-      <Button type="submit">Add contact</Button>
+      <Button>Add contact</Button>
     </form>
   );
 };
