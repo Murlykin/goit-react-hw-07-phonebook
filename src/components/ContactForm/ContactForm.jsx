@@ -7,16 +7,16 @@ import { Button, Input, Label } from './ContactForm.styled';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const contacts = useSelector(getContactsValue);
 
   const dispatch = useDispatch();
   const id = shortid.generate();
 
-  const createContact = ({ name, number }) => ({
+  const createContact = ({ name, phone }) => ({
     id: id,
     name,
-    number,
+    phone,
   });
 
   const addContactToState = contact => dispatch(addContact(contact));
@@ -29,8 +29,8 @@ export const ContactForm = () => {
         setName(value);
         break;
 
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
 
       default:
@@ -46,14 +46,14 @@ export const ContactForm = () => {
     if (userName) {
       alert(`${name} is already in contacs`);
     } else {
-      addContactToState(createContact({ name, number }));
+      addContactToState(createContact({ name, phone }));
       reset();
     }
   };
 
   const reset = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -71,11 +71,11 @@ export const ContactForm = () => {
       />
 
       <Label>
-        Number
+        phone
         <Input
           type="tel"
-          name="number"
-          value={number}
+          name="phone"
+          value={phone}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required

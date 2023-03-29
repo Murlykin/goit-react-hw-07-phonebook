@@ -7,13 +7,8 @@ import { selectError, selectIsLoading } from 'redux/selectors/selectors';
 import { ThreeDots } from 'react-loader-spinner';
 import { fetchContacts } from "redux/operations";
 import { getAllContacts } from 'redux/selectors/selectors';
-
-
-
 import { ContactsTitle, Container, Title } from './App.styled';
 import { GlobalStyle } from 'components/GlobalStyle';
-
-
 
 export const App = () => {
   const contacts = useSelector(getAllContacts);
